@@ -22,6 +22,18 @@ def standardise_columns(X):
 
     standardise_columns(np.array([[1., 10.], [3., 10.]])) -> [[-1, 0], [1, 0]]
     """
+    std = np.std(X, axis=0)
+    mask = std < 1e-12
+
+
+    safe_std = np.where(mask, 1, std)
+    Z = (X - np.mean(X, axis=0)) / safe_std
+    Z[]
+    print(Z)
+
+standardise_columns(np.array([[1., 10.], [3., 10.]]))
+
+X = np.array([[1., 10.], [3., 10.]])
 
 
 def replace_outliers(x, k=3.0):
