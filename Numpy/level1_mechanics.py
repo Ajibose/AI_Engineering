@@ -1,4 +1,9 @@
-"""Level 1 — Array mechanics: creation, dtypes, slicing, views vs copies."""
+"""Level 1 — Array mechanics: creation, dtypes, slicing, views vs copies.
+
+Rules for every function in this file (unless its docstring says otherwise):
+- No Python for/while loops or comprehensions.
+- Don't modify the input arrays.
+"""
 
 import numpy as np
 
@@ -56,8 +61,6 @@ def safe_tail(a, k):
 
     return a[start:end].copy()
 
-a = np.arange(5)
-print(a.dtype, np.array([]).dtype)
 
 def nbytes_for(shape, dtype):
     """1.4 Return how many bytes an array with this shape and dtype would use,
@@ -66,7 +69,11 @@ def nbytes_for(shape, dtype):
     nbytes_for((1000, 1000), np.float32)    -> 4000000
     nbytes_for((7_000_000_000,), "float16") -> 14000000000
     """
-    pass
+    type_size = np.dtype(dtype).itemsize
+
+    total_size = type_size * math.prod(shape)
+
+    return total_size
 
 
 def to_uint8_image(x):
@@ -75,7 +82,7 @@ def to_uint8_image(x):
 
     to_uint8_image(np.array([-3.0, 2.5, 3.5, 254.6, 300.0])) -> [0, 2, 4, 255, 255]
     """
-    pass
+    return np.round(x).clip(0, 255).astype(np.uint8)
 
 
 def inclusive_grid(start, stop, step):
@@ -85,4 +92,8 @@ def inclusive_grid(start, stop, step):
     inclusive_grid(0.0, 1.0, 0.25)     -> [0, 0.25, 0.5, 0.75, 1.0]
     len(inclusive_grid(0.0, 1.0, 0.1)) -> 11
     """
-    pass
+
+    no_of_elements = 1 + ((stop - start) / step)
+
+    return np.linspace(start, stop, round(no_of_elements), endpoint=True)
+
